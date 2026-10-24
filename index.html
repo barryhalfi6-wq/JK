@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore — découvrez des destinations, créez vos itinéraires et préparez votre prochain voyage.">
+  <title>Explore — Découvrez. Visitez. Vivez.</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Explore, accueil">
+        <span class="brand-mark">⌁</span><span><strong>Explore</strong><small>Découvre. Visite. Vis.</small></span>
+      </a>
+      <nav class="side-nav" aria-label="Navigation principale">
+        <button class="nav-item active" data-view="home"><span>⌂</span> Accueil</button>
+        <button class="nav-item" data-view="destinations"><span>◈</span> Destinations</button>
+        <button class="nav-item" data-view="map"><span>⌖</span> Carte interactive</button>
+        <button class="nav-item" data-view="trips"><span>▤</span> Mes voyages</button>
+        <button class="nav-item" data-view="favorites"><span>♡</span> Favoris <b id="fav-count">0</b></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-tip"><span>✦</span><strong>Le monde vous attend.</strong><p>Votre prochaine aventure commence ici.</p></div>
+        <div class="profile-mini"><div class="avatar">E</div><div><strong>Voyageur</strong><small>Explorateur</small></div><span>⌄</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Ouvrir le menu">☰</button>
+        <label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Rechercher une destination, un lieu, un pays…"><kbd>↵</kbd></label>
+        <div class="top-actions"><span class="today-label">Votre prochaine aventure</span><button class="icon-button" id="random-destination" title="Découverte surprise">✧</button><div class="avatar">E</div></div>
+      </header>
+
+      <section class="view active-view" id="view-home">
+        <div class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow">VOTRE PROCHAINE AVENTURE</span>
+            <h1>Le monde est<br><em>à découvrir.</em></h1>
+            <p>Des lieux extraordinaires, des itinéraires inspirants et des souvenirs qui n'attendent que vous.</p>
+            <button class="primary-button" data-go="destinations">Explorer les destinations <span>→</span></button>
+            <div class="hero-stats"><div><strong>120+</strong><small>idées de voyage</small></div><div><strong>45</strong><small>pays à explorer</small></div><div><strong>∞</strong><small>souvenirs à créer</small></div></div>
+          </div>
+          <div class="hero-photo" role="img" aria-label="Paysage de montagne au coucher du soleil">
+            <div class="photo-tag"><span class="tag-dot"></span> Inspiration du jour</div>
+            <div class="photo-caption"><small>À NE PAS MANQUER</small><h2>La beauté du monde<br>vous attend.</h2></div>
+          </div>
+        </div>
+
+        <section class="section-block">
+          <div class="section-heading"><div><span class="eyebrow">TROUVEZ VOTRE INSPIRATION</span><h2>Destinations populaires</h2><p>Des endroits qui méritent une place dans vos souvenirs.</p></div><button class="text-button" data-go="destinations">Tout explorer <span>→</span></button></div>
+          <div class="filter-row" id="home-filters">
+            <button class="chip selected" data-filter="Tous">Tous les lieux</button><button class="chip" data-filter="Nature">Nature</button><button class="chip" data-filter="Culture">Culture</button><button class="chip" data-filter="Plage">Plages</button><button class="chip" data-filter="Ville">Villes</button>
+          </div>
+          <div class="destination-grid" id="home-destinations"></div>
+        </section>
+
+        <section class="section-block lower-grid">
+          <div class="map-preview-card"><div class="section-heading compact"><div><span class="eyebrow">EXPLOREZ AUTREMENT</span><h2>Le monde, à portée de main</h2><p>Repérez vos prochaines étapes sur la carte.</p></div><button class="round-arrow" data-go="map">↗</button></div><div id="preview-map" class="preview-map"></div></div>
+          <div class="trip-promo"><span class="promo-icon">✈</span><span class="eyebrow">VOYAGEZ À VOTRE RYTHME</span><h2>Chaque voyage<br>raconte une histoire.</h2><p>Créez un itinéraire qui vous ressemble, étape après étape.</p><button class="light-button" data-go="trips">Créer mon itinéraire →</button></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-destinations">
+        <div class="page-heading"><span class="eyebrow">LE MONDE VOUS ATTEND</span><h1>Toutes les destinations</h1><p>Choisissez un lieu, suivez votre curiosité et commencez à rêver.</p></div>
+        <div class="filter-row" id="all-filters"><button class="chip selected" data-filter="Tous">Tout</button><button class="chip" data-filter="Nature">Nature</button><button class="chip" data-filter="Culture">Culture</button><button class="chip" data-filter="Plage">Plages</button><button class="chip" data-filter="Ville">Villes</button></div>
+        <div class="destination-grid large-grid" id="all-destinations"></div>
+      </section>
+
+      <section class="view" id="view-map">
+        <div class="page-heading"><span class="eyebrow">VOTRE BOUCLE DU MONDE</span><h1>Carte interactive</h1><p>Sélectionnez un marqueur pour découvrir un lieu et ses informations.</p></div>
+        <div class="map-layout"><div id="main-map" class="main-map"></div><aside class="map-side-panel"><span class="eyebrow">À EXPLORER</span><h2>À vous de choisir.</h2><p>Zoomez sur la carte ou sélectionnez une destination pour afficher ses détails.</p><div id="map-place-list" class="map-place-list"></div></aside></div>
+      </section>
+
+      <section class="view" id="view-trips">
+        <div class="page-heading"><span class="eyebrow">VOTRE CARNET DE VOYAGE</span><h1>Mes voyages</h1><p>Composez un itinéraire simple et gardez vos étapes au même endroit.</p></div>
+        <div class="trip-builder">
+          <div class="trip-form-card"><span class="eyebrow">NOUVEAU PROJET</span><h2>Un voyage à votre image</h2><label for="trip-name">Nom du voyage</label><input id="trip-name" type="text" placeholder="Ex. Vacances d'été"><label for="trip-destination">Destination</label><select id="trip-destination"></select><div class="form-two"><div><label for="trip-days">Durée (jours)</label><input id="trip-days" type="number" min="1" max="90" value="4"></div><div><label for="trip-budget">Budget estimé (€)</label><input id="trip-budget" type="number" min="0" value="500"></div></div><button class="primary-button full-button" id="save-trip">＋ Enregistrer le voyage</button></div>
+          <div class="trip-list-card"><span class="eyebrow">VOS PROJETS</span><h2>Voyages enregistrés</h2><div id="trip-list" class="trip-list"></div></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-favorites">
+        <div class="page-heading"><span class="eyebrow">VOTRE COLLECTION PERSONNELLE</span><h1>Mes favoris</h1><p>Les lieux que vous souhaitez garder en mémoire.</p></div>
+        <div class="destination-grid large-grid" id="favorite-destinations"></div>
+        <div id="empty-favorites" class="empty-state"><span>♡</span><h2>Votre carnet d'envies est vide</h2><p>Appuyez sur le cœur d'une destination pour la retrouver ici.</p><button class="primary-button" data-go="destinations">Découvrir les destinations →</button></div>
+      </section>
+
+      <footer class="footer"><a class="footer-brand" href="#">Explore<span>.</span></a><p>Voyagez. Découvrez. Vivez.</p><small>Prototype de démonstration · Les informations et budgets sont indicatifs.</small></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="destination-modal" aria-hidden="true"><section class="destination-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="modal-close" id="modal-close" aria-label="Fermer">×</button><div class="modal-image" id="modal-image"></div><div class="modal-body"><span class="eyebrow" id="modal-category"></span><h2 id="modal-title"></h2><div class="modal-meta" id="modal-meta"></div><p id="modal-description"></p><div class="info-pills" id="modal-pills"></div><div class="modal-actions"><button class="primary-button" id="modal-add-trip">Ajouter à un voyage →</button><button class="secondary-button" id="modal-favorite">♡ Ajouter aux favoris</button></div></div></section></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
